@@ -6,6 +6,14 @@ import { ActorDatasource } from "../datasource/actor.datasource";
 @Injectable()
 export class ActorRepositoryImpl implements ActorRepository {
   constructor(private readonly actorDatasource: ActorDatasource) {}
+  
+  async findAll(): Promise<Array<ActorModel>> {
+    return this.actorDatasource.findAll();
+  }
+
+  async update(actor: ActorModel): Promise<ActorModel> {
+    return this.actorDatasource.update(actor);
+  }
 
   async maxId(): Promise<number> {
     return await this.actorDatasource.maxId() || 0;

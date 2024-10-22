@@ -11,6 +11,12 @@ export class ActorDatasource {
     private readonly datasourceRepo : Repository<ActorEntity>
   ) {}
 
+  async findAll(): Promise<Array<ActorModel>> {
+    const entities = await this.datasourceRepo.find();
+    const res = entities.map((actor) => (actor.toModel()))
+    return res;
+  }
+
   async maxId(): Promise<number> {
     return await this.datasourceRepo.maximum("actor_id");
   }
@@ -27,5 +33,14 @@ export class ActorDatasource {
     entity.last_update = actor.lastUpdate;
     const res = await this.datasourceRepo.insert(entity);
     return actor;
+  }
+
+  async update(actor: ActorModel): Promise<ActorModel> {
+    const res = await this.datasourceRepo.update(actor.id, {
+      first_name: actor.firstName,
+      last_name: actor.lastName,
+      last_update: actor.lastUpdate
+    })
+    return res.affected? actor : undefined;
   }
 }
