@@ -3,15 +3,15 @@ export class ActorModel {
     public id: number,
     public firstName: string,
     public lastName: string,
-    public lastUpdate: Date
+    public lastUpdate: Date,
   ) {}
 
   toJson(): Record<string, any> {
     return {
-      "id": this.id,
-      "firstName": this.firstName,
-      "lastName": this.lastName,
-      "lastUpdate": this.lastUpdate
-    }
+      id: this.id,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      lastUpdate: this.lastUpdate,
+    };
   }
 }

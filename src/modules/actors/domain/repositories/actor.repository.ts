@@ -1,4 +1,4 @@
-import { ActorModel } from "../models/actor.model";
+import { ActorModel } from '../models/actor.model';
 
 export abstract class ActorRepository {
   abstract maxId(): Promise<number>;

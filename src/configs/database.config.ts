@@ -1,4 +1,4 @@
-import { registerAs } from "@nestjs/config";
+import { registerAs } from '@nestjs/config';
 
 export default registerAs('databaseConfig', () => ({
   type: process.env.DB_TYPE,
@@ -9,5 +9,5 @@ export default registerAs('databaseConfig', () => ({
   database: process.env.DB_DATABASE,
   logging: process.env.DB_LOGGING,
   synchronize: false,
-  autoLoadEntities: true
+  autoLoadEntities: true,
 }));

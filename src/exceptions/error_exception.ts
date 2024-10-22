@@ -1,5 +1,4 @@
-import { ErrorCode } from "./error_codes";
-
+import { ErrorCode } from './error_codes';
 
 export class ErrorException extends Error {
   public readonly code: number;

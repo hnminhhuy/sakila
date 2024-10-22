@@ -1,7 +1,7 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
-import { ErrorException } from "./error_exception";
-import { ErrorCode } from "./error_codes";
-import { Request, Response } from "express";
+import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import { ErrorException } from './error_exception';
+import { ErrorCode } from './error_codes';
+import { Response } from 'express';
 
 @Catch()
 export class GlobalException implements ExceptionFilter {
@@ -33,7 +33,7 @@ export class GlobalException implements ExceptionFilter {
 
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    // const request = ctx.getRequest<Request>();
 
     try {
       response.setHeader('X-Error-Message', errorException.message);

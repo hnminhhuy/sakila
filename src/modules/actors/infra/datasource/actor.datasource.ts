@@ -1,28 +1,27 @@
-import { Injectable } from "@nestjs/common";
-import { Repository } from "typeorm";
-import { ActorEntity } from "./entities/actor.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { ActorModel } from "../../domain/models/actor.model";
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { ActorEntity } from './entities/actor.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ActorModel } from '../../domain/models/actor.model';
 
 @Injectable()
 export class ActorDatasource {
   constructor(
     @InjectRepository(ActorEntity)
-    private readonly datasourceRepo : Repository<ActorEntity>
+    private readonly datasourceRepo: Repository<ActorEntity>,
   ) {}
 
   async findAll(): Promise<Array<ActorModel>> {
     const entities = await this.datasourceRepo.find();
-    const res = entities.map((actor) => (actor.toModel()))
-    return res;
+    return entities.map((actor) => actor.toModel());
   }
 
   async maxId(): Promise<number> {
-    return await this.datasourceRepo.maximum("actor_id");
+    return await this.datasourceRepo.maximum('actor_id');
   }
 
   async findById(id: number): Promise<ActorModel> {
-    const res = await this.datasourceRepo.findOne({where: {actor_id: id}});
+    const res = await this.datasourceRepo.findOne({ where: { actor_id: id } });
     return res?.toModel();
   }
   async insert(actor: ActorModel): Promise<ActorModel> {
@@ -39,8 +38,8 @@ export class ActorDatasource {
     const res = await this.datasourceRepo.update(actor.id, {
       first_name: actor.firstName,
       last_name: actor.lastName,
-      last_update: actor.lastUpdate
-    })
-    return res.affected? actor : undefined;
+      last_update: actor.lastUpdate,
+    });
+    return res.affected ? actor : undefined;
   }
 }
