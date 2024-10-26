@@ -7,29 +7,31 @@ import { Response } from 'express';
 export class GlobalException implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     let errorException: ErrorException;
-    let httpStatusCode: number;
+    let errorCode: ErrorCode;
 
-    if (exception.status === 404) {
-      httpStatusCode = 404;
-      errorException = new ErrorException(
-        ErrorCode.RESOURCE_NOT_FOUND,
-        'Resource not found',
-        'The requested resource could not be found.',
-      );
-    } else if (exception instanceof ErrorException) {
-      errorException = exception;
-      httpStatusCode = exception.httpStatusCode;
-    } else {
-      errorException = new ErrorException(
-        ErrorCode.UNDEFINED_ERROR,
-        exception.response?.error ??
-          exception.response?.message ??
-          exception.message ??
-          'Undefined Error',
-        exception.message,
-      );
-      httpStatusCode = exception.status ?? errorException.httpStatusCode;
+    console.log(exception);
+    switch (exception.status) {
+      case 404:
+        errorCode = ErrorCode.RESOURCE_NOT_FOUND
+        break;
+      case 400:
+        errorCode = ErrorCode.VALIDATION_ERROR
+        break;
+      case 403:
+        errorCode = ErrorCode.FORBIDDEN_ERROR
+        break;
+      default:
+        errorCode = ErrorCode.UNDEFINED_ERROR
+        break;
     }
+
+
+    errorException = new ErrorException(
+      errorCode,
+      exception.response?.error ?? 'Undefined Error',
+      exception.response.message
+    )
+
 
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -46,7 +48,7 @@ export class GlobalException implements ExceptionFilter {
 
     return response
       .setHeader('X-Error-Code', errorException.code)
-      .status(httpStatusCode)
+      .status(exception.status)
       .json(errorException.getErrors());
   }
 }
