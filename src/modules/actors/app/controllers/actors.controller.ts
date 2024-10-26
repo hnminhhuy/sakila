@@ -53,7 +53,6 @@ export class ActorsController {
         actorDto.firstName,
         actorDto.lastName,
       );
-      console.log(actor);
       return {
         message: 'Create actor sucessfully',
         data: actor,
