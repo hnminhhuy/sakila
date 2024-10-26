@@ -15,9 +15,9 @@ export class ErrorException extends Error {
 
   public getErrors(): Record<string, any> {
     return {
-      error_code: this.code,
-      error_message: this.message,
-      ...(this.description && { error_description: this.description }),
+      errorCode: this.code,
+      errorMessage: this.message,
+      ...(this.description && { errorDescription: this.description }),
     };
   }
 }
