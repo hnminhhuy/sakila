@@ -12,33 +12,31 @@ export class GlobalException implements ExceptionFilter {
     console.log(exception);
     switch (exception.status) {
       case 404:
-        errorCode = ErrorCode.RESOURCE_NOT_FOUND
+        errorCode = ErrorCode.RESOURCE_NOT_FOUND;
         break;
       case 400:
-        errorCode = ErrorCode.VALIDATION_ERROR
+        errorCode = ErrorCode.VALIDATION_ERROR;
         break;
       case 403:
-        errorCode = ErrorCode.FORBIDDEN_ERROR
+        errorCode = ErrorCode.FORBIDDEN_ERROR;
         break;
       default:
-        errorCode = ErrorCode.UNDEFINED_ERROR
+        errorCode = ErrorCode.UNDEFINED_ERROR;
         break;
     }
-
 
     errorException = new ErrorException(
       errorCode,
       exception.response?.error ?? 'Undefined Error',
-      exception.response.message
-    )
-
+      exception.response?.message,
+    );
 
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     // const request = ctx.getRequest<Request>();
 
     try {
-      response.setHeader('X-Error-Message', errorException.message);
+      response.setHeader('X-Error-Message', errorException?.message);
     } catch (headerError) {
       response.setHeader(
         'X-Error-Message',
